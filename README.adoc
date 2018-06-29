@@ -221,3 +221,4 @@ After executing this tutorial stop all docker images so it does not overload you
 ```
 docker stop $(docker ps -q)
 ```
+
