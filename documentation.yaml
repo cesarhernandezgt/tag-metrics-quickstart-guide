@@ -4,6 +4,6 @@ documentation:
 
   - doc_root: 'README.adoc'
     name: 'Examples'
-    display_name: 'Tribestream API Gateway Metrics Quickstart'
+    display_name: 'Metrics'
     public_path: 'en/api-gateway/metrics'
     single_page: 'true'
