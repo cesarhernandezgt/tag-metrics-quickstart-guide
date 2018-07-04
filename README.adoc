@@ -233,7 +233,7 @@ The script below will sign the request to a micro-service, protected with Http S
 ./scripts/sign.sh --key business-partner-key --secret "secret" -X GET http://localhost:8080/movies-microservice
 ```
 
-After that, as TAG Administrator, go to Kibana _Dashboard -> link:http://localhost:5601/app/kibana#/dashboard/Proxy-Dashboard[_Proxy Dashboard_]
+After that, as TAG Administrator, go to Kibana _Dashboard -> link:http://localhost:5601/app/kibana#/dashboard/Proxy-Dashboard[Proxy Dashboard_]
 
 In the _Keys_ table you will see the _Exp. Date_ for _business-partner-key_ which is two days from now. Click _Filter for value_ in the _Key Id_ column and _Apply now_.
 
