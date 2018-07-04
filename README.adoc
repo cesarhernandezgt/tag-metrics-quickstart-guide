@@ -142,7 +142,7 @@ User receives response:
 ```
 TAG didn't authenticate and the user decides to reach out and ask what is the issue.
 
-As a TAG Administrator I can use Discover in link:[http://localhost:5601/app/kibana#/discover?_g=()]Kibana and the Built in Dashboards to advise the user. First step is to go to the Discover menu and try to find the request for the username _bob1_. Type the lucene query to filter the request for that user and press _enter_.
+As a TAG Administrator I can use Discover in link:http://localhost:5601/app/kibana#/discover[Kibana] and the Built in Dashboards to advise the user. First step is to go to the Discover menu and try to find the request for the username _bob1_. Type the lucene query to filter the request for that user and press _enter_.
 ```
 category:request AND authentication.profiles.username:bob1
 ```
