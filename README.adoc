@@ -21,7 +21,7 @@
 * link:https://curl.haxx.se/[Curl] installed
 * link:https://git-scm.com/[Git] installed
 
-== Run Docker Image for ElasticSearch 5 and Kibana 5
+== Docker Memory Configuration
 To run the image with ElasticSearch and Kibana you need to increase the virtual memory:
 
 For Linux: +
@@ -44,6 +44,7 @@ Exit by Control-A Control-\.
 
 IMPORTANT: If you are a OSX user make sure your Docker memory is at least 6GB. See how to configure it link:https://docs.docker.com/docker-for-mac/#advanced[here].
 
+==  Run Docker Image for ElasticSearch 5 and Kibana 5
 
 Run the docker image:
 ```
