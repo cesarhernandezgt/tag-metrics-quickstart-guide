@@ -1,0 +1,20 @@
+//api/account/
+{
+  "username": "matt",
+  "email": "matt@superbiz.com",
+  "displayName": "Matt",
+  "roles": [
+    {
+      "displayName": "administrator",
+      "name": "administrator",
+      "id": "administrator"
+    }
+  ],
+  "credentials": {
+    "password": {
+      "active": true,
+      "value": "12345678",
+      "createdDate": "2018-04-29T20:22:01Z"
+    }
+  }
+}

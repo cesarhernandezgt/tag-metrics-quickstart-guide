@@ -1,0 +1,52 @@
+{
+  "settings": [
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.clientSecretValidity",
+      "value": "90 days"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.keyValidity",
+      "value": "2 days"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.keyPairValidity",
+      "value": "182 days"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.keyOverlapping",
+      "value": "1 day"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.keyPairOverlapping",
+      "value": "30 days"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.keyPairDefaultSize",
+      "value": "2048"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.keyMaxNumber",
+      "value": "2"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.keyPairMaxNumber",
+      "value": "2"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.keyPairAllowedKeyAlgorithms",
+      "value": "RSA-SHA256"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.passwordMaxSize",
+      "value": "64"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.service.Policies.passwordMinSize",
+      "value": "8"
+    },
+    {
+      "key": "com.tomitribe.tribestream.container.oauth2.OAuth2Configuration.defaultProfile",
+      "value": "oauth2-profile"
+    }
+  ]
+}

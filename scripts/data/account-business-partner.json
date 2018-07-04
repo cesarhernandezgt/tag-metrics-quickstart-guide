@@ -1,0 +1,35 @@
+//api/account/
+{
+  "credentials": {
+    "secretKeys": [
+      {
+        "active": true,
+        "type": "HMAC",
+        "spec": "hmac-sha256",
+        "id": "business-partner-key",
+        "value": "secret"
+      }
+    ]
+    
+  },
+  "displayName": "Business Partner",
+  "roles": [
+    {
+      "displayName": "administrator",
+      "name": "administrator",
+      "id": "administrator"
+    }
+  ],
+  "groups": [
+    
+  ],
+  "type": "USER",
+  "tags": [
+    
+  ],
+  "createdDate": "2018-07-03T19:16:24Z",
+  "sourceType": "ACCOUNT",
+  "id": "business-partner",
+  "email": "business-partner@superbiz.com",
+  "username": "business-partner"
+}

@@ -1,0 +1,27 @@
+//api/account/
+{
+  "username": "bob-mobile-client",
+  "email": "bob@superbiz.com",
+  "displayName": "Bob Mobile Client",
+  "roles": [
+    {
+      "displayName": "administrator",
+      "name": "administrator",
+      "id": "administrator"
+    }
+  ],
+  "credentials": {
+    "secretKeys": [
+      
+    ],
+    "publicPrivateKeys": [
+      
+    ],
+    "clientSecret": {
+      "active": true,
+      "value": "12345678",
+      "createdDate": "2018-07-03T14:04:50Z",
+      "oAuth2ProfileRef": "oauth2-profile"
+    }
+  }
+}

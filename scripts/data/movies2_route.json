@@ -1,0 +1,15 @@
+//api/route
+{
+  "profileRequiresAll": true,
+  "modRewrite": "RewriteRule \"^/movies-microservice2$\" \"http://localhost:9080/movie-api/api/movies2\" [P,NE,auth]",
+  "roleRequiresAll": true,
+  "name": "Movies Microservice 2",
+  "profiles": [
+    {
+      "id": "http-signatures-profile",
+      "name": "HTTP Signatures Profile",
+      "displayName": "HTTP Signatures Profile",
+      "description": "HTTP Signatures provides strong authentication and validation that a message has not been tampered with during\ntransport.\n\nHTTP(S) Messages between the client and server are digitally signed with a shared secret key, providing the identity\nof the caller and validating the content of the message."
+    }
+  ]
+}

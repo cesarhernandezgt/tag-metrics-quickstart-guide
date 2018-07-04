@@ -1,0 +1,40 @@
+//api/route
+{
+  "headers": [
+    
+  ],
+  "profileRequiresAll": false,
+  "roles": [
+    
+  ],
+  "profiles": [
+    {
+      "displayName": "Basic Auth Profile",
+      "name": "Basic Auth Profile",
+      "description": "Basic Auth Profile",
+      "id": "basic-auth-profile"
+    },
+    {
+      "displayName": "HTTP Signatures Profile",
+      "name": "HTTP Signatures Profile",
+      "description": "HTTP Signatures provides strong authentication and validation that a message has not been tampered with during\ntransport.\n\nHTTP(S) Messages between the client and server are digitally signed with a shared secret key, providing the identity\nof the caller and validating the content of the message.",
+      "id": "http-signatures-profile"
+    },
+    {
+      "displayName": "OAuth2 Profile",
+      "name": "OAuth2 Profile",
+      "description": "The OAuth 2.0 Profile provides a way to obtain limited access to user accounts on an HTTP service.\n\nThe TAG OAuth 2.0 implementation, uses JSON Web Tokens (JWTs) as the tokens issued and used to authenticate to access endpoints.\n\nJWT tokens consist of a header and a set of claims, which are both Base64 encoded, and a signature calculated using RSA\nwith SHA256. Overall, this creates three Base64 strings which are concatenated together with dots (.). Each use of a\nJWT token within TAG is validated using the TAG RSA public key, preventing tokens issued by the TAG from being tampered\nwith.\n",
+      "id": "oauth2-profile"
+    }
+  ],
+  "index": 2,
+  "modRewrite": "RewriteRule \"^/movies-microservice$\" \"http://localhost:9080/movie-api/api/movies\" [P,NE,auth]",
+  "lastMatchPattern": "^/movies-microservice$",
+  "roleRequiresAll": true,
+  "tags": [
+    
+  ],
+  "name": "Movies Microservice",
+  "id": "movies-microservice",
+  "description": "Movies Microservice"
+}

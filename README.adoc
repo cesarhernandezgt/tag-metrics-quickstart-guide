@@ -19,6 +19,7 @@
 
 * link:https://www.docker.com/community-edition[Docker] installed and running
 * link:https://curl.haxx.se/[Curl] installed
+* link:https://git-scm.com/[Git] installed
 
 == Run Docker Image for ElasticSearch 5 and Kibana 5
 To run the image with ElasticSearch and Kibana you need to increase the virtual memory:
@@ -43,7 +44,7 @@ Exit by Control-A Control-\.
 
 Run the docker image:
 ```
-docker run -it -p 5601:5601 -p 9200:9200 -p 5044:5044 sebp/elk:564
+docker run --name tag-elk-kibana -it -p 5601:5601 -p 9200:9200 -p 5044:5044 sebp/elk:564
 ```
 After a few seconds you should see the logs like this:
 
@@ -58,16 +59,22 @@ You can access Kibana using the URL link:http://localhost:5601[].  This is the K
 image::kibana_page.png[title="Kibana Web Page"]
 
 == Run Tribestream API Gateway with Metrics Configuration
-Go to the terminal, press _Ctrl P_ + _Ctrl Q_ and detach the previous docker image, then execute the command below to run TAG with Metrics configured pointing to the ElasticSearch and Kibana you started.
+Go to the terminal, press _Ctrl P_ + _Ctrl Q_ and detach the previous docker image. If you already have TAG running, stop the image using the command:
+
+```
+docker stop tag
+```
+
+Then run TAG with Metrics configured pointing to the ElasticSearch and Kibana you started.
 
 For Linux: +
 ```
-docker run -it --net=host -e LICENSE=accept -e ELASTICSEARCH_HOST=localhost -e KIBANA_HOST=localhost tomitribe/tribestream-api-gateway
+docker run --name=tag-metrics -it --net=host -e LICENSE=accept -e ELASTICSEARCH_HOST=localhost -e KIBANA_HOST=localhost tomitribe/tribestream-api-gateway
 ```
 
 For OSX: +
 ```
-docker run -it -p 8080:8080 -e LICENSE=accept -e ELASTICSEARCH_HOST=host.docker.internal -e KIBANA_HOST=host.docker.internal tomitribe/tribestream-api-gateway
+docker run --name=tag-metrics -it -p 8080:8080 -e LICENSE=accept -e ELASTICSEARCH_HOST=host.docker.internal -e KIBANA_HOST=host.docker.internal tomitribe/tribestream-api-gateway
 ```
 
 TAG is complete ready when you see the following message on the TAG log:
@@ -84,40 +91,97 @@ URL: link:http://localhost:5601[]
 
 image::kibana_index.png[title="Kibana Index Configured"]
 
-== Scenario - Get an access token
-The first scenario is to authenticate into TAG and get a token so you analyze that call using Kibana.
+== Run App with Micro-Services
 
+For Linux: +
 ```
-curl -XPOST -d "grant_type=password&username=admin&password=admin&client_id=admin&client_secret=admin" http://localhost:8080/oauth2/token
-```
-
-image::get_token.png[title="Access Token"]
-
-== Discover Menu Kibana
-Click on the _Discover_ tab so we are able analyze the incoming request. Note that there is a 15 minutes range in the top right that the filter for the events in a period of minutes. Thus, if your request disappear, you need to put a longer range. In the query input filter for _category:request_ and it will only show the requests.
-
-image::discover.png[title="Discover Menu"]
-
-The request we sent to get the token is there, now let’s expand and see what is in json sent by TAG. Click the arrow to expand, and then chose to visualize in _Table_ format or _JSON_. Inside the property __source_, is the payload sent by TAG. It has the content of a request, more specifically for this scenario data related to authentication as this is a request to get an access token. You will be able to find things that will be very helpful for analyzing the request like authentication result, the key used to sign the access token, the roles for that user and client, http headers and a lot of other things.
-
-Let’s now raise the range to one hour so we don’t lose the data in the screen. To do that click Last 15 minutes, then click Last 1 Hour.
-
-image::kibana_period.png[title="Kibana Period Configuration"]
-
-Now let’s do one more call but with a wrong user so we have more data to analyze:
-
-```
-curl -XPOST -d "grant_type=password&username=wrong_user&password=admin&client_id=admin&client_secret=admin" http://localhost:8080/oauth2/token
+docker run --net=host --name movies -p 9080:9080 tomitribedev/tag-routes-quickstart-guide
 ```
 
-You will see the message below:
+For OSX: +
+```
+docker run --name movies -p 9080:9080 tomitribedev/tag-routes-quickstart-guide
+```
 
-image::wrong_user.png[title="Wrong user authentication"]
+== Load initial data to TAG
 
+```
+git clone https://github.com/tomitribe/tag-metrics-quickstart-guide
+cd tag-metrics-quickstart-guide/scripts
+```
 
-After that go to in the left menu click _Dashboard_ and then _OAuth2 Dashboard_.
+Execute the script below:
+```
+./scripts/load_configuration.sh
+```
 
-image::dashboard.png[title="Dashboard Menu"]
+This script will load the pre-configured data needed to run this guide.
+
+Now we will check some scenarios to help you better understand how metrics can help you.
+
+== You are a TAG Administrator and an user reports having issues logging in. How do you find the issue?
+
+Let's simulate an user trying to authenticate into TAG and being denied. We will use username bob1.
+
+```
+curl -XPOST -d "grant_type=password&username=bob1&password=12345678&client_id=bob-mobile-client&client_secret=12345678" http://localhost:8080/oauth2/token
+```
+User receives response:
+```json
+{"error_description":"The resource owners credentials are invalid","error":"grant_invalid"}%
+```
+TAG didn't authenticate and the user decides to reach out and ask what is the issue.
+
+As a TAG Administrator I can use Kibana Discover and the Built in Dashboards to advise the user.
+
+First step is to go to the Discover menu and try to find the request for the username _bob1_. Type the lucene query to filter the request for that user.
+```
+category:request AND authentication.profiles.username:bob1
+```
+The request is there, click _JSON_. In the payload authentication property you will see the error code _user_not_found_ saying the user was not found.
+
+```json
+...
+"request_id": "b199f6da92149309",
+"authentication": {
+      "elapsed_ns": 8199852,
+      "errors": [
+        {
+          "code": "user_not_found",
+          "profile": "Default OAuth2 profile"
+        }
+      ],
+      "result": "denied",
+      "profiles": [
+        {
+          "username": "bob1",
+          "name": "Default OAuth2 profile",
+          "grant_type": "password",
+          "result": "denied",
+          "type": "oauth2",
+          "client_id": "bob-mobile-client"
+        }
+      ],
+      "elapsed_sec": 0.008199852
+    },
+...
+```
+
+You can also analyze this request in the OAuth2 Dashboard, therefore copy the request id from the payload and go to the menu _Dashboard_ -> _OAuth2 Dashboard_.
+
+Add the _<request_id_> to the input and press enter. If you check the _Request by Error_ visualization you will see the _user_not_found_ error is there.
+
+image::user_not_found.png[title="User not found error"]
+
+Now you can advise the user saying the issue is: *The user was not found* and he may use valid user.
+
+The user realizes the username is actually bob, and tries again.
+
+```
+curl -XPOST -d "grant_type=password&username=bob&password=12345678&client_id=bob-mobile-client&client_secret=12345678" http://localhost:8080/oauth2/token
+```
+
+User will be able to authenticate properly. You can go again to the OAuth2 Dashboard remove the request_id filter and check that the user was able to authenticate.
 
 == OAuth2 Dashboard Introduction
 The OAuth2 Dashboard has all the authentication information related to OAuth2. Therefore here we have in the Requests visualization the two requests you did and with the date and their request ids. It can be used for filtering the the Discover menu if you want to see the full payload.
@@ -134,7 +198,7 @@ The _OAuth2 Response Time Breakdown by Grant_ will show you how long each part o
 
 image::oauth2_breakdown.png[title="OAuth2 Response Time Breakdown by Grant"]
 
-The __Request by Error_ will tell you the reason a request failed, as we used username wrong_user, and got a 400 Bad Request the user_not_found error code is explicitly showing the issue with the request.
+The __Request by Error_ will tell you the reason a request failed, just like we saw previously.
 
 image::request_by_error.png[title="Request by Error"]
 
@@ -152,47 +216,49 @@ _Request by Http Status_ - It will show you the number of requests over a period
 
 image::oauth2_three_last.png[title="Last three visualizations"]
 
-== Scenario - Call TAG with access token and proxy request to google
+== You are a TAG Administrator and you want to advise a _business partner_ that the key is expiring.
 
-The purpose of this tutorial is not to go into details in TAG functionality but show the Metrics feature, therefore this is the reason we are going to add the route through the rest api.
-
-To add the route to TAG, execute the curl command below:
-
+The script below will sign the request to a micro-service, protected with Http Signature, with the _business-partner-key_.
 ```
-curl -v 'http://localhost:8080/tag/api/route' -H 'Authorization: Basic YWRtaW46YWRtaW4=' -H 'Content-Type: application/json;charset=UTF-8' --data-binary '{"headers":[],"profileRequiresAll":true,"roles":[],"profiles":[{"id":"oauth2-profile","name":"OAuth2 Profile","displayName":"OAuth2 Profile","description":"The OAuth 2.0 Profile provides a way to obtain limited access to user accounts on an HTTP service.\n\nThe TAG OAuth 2.0 implementation, uses JSON Web Tokens (JWTs) as the tokens issued and used to authenticate to access endpoints.\n\nJWT tokens consist of a header and a set of claims, which are both Base64 encoded, and a signature calculated using RSA\nwith SHA256. Overall, this creates three Base64 strings which are concatenated together with dots (.). Each use of a\nJWT token within TAG is validated using the TAG RSA public key, preventing tokens issued by the TAG from being tampered\nwith.\n"}],"index":1,"modRewrite":"RewriteRule \"^/google$\" \"http://www.google.com\" [P,NE,auth]","lastMatchPattern":"^/google$","roleRequiresAll":true,"tags":[],"name":"Google","id":"google"}' --compressed
+./scripts/sign.sh --key business-partner-key --secret "secret" -X GET http://localhost:8080/movies-microservice
 ```
 
-Now you will have a route you can call on link:http://localhost:8080/google[], when you call it with proper OAuth2 authentication it will proxy you to google.
+After that, as TAG Administrator, go to Kibana _Dashboard -> Proxy Dashboard_
 
-To call the Google Route execute the command below, replacing <access-token> with the value you got in the “Get Access Token” scenario:
+In the _Keys_ table you will see the _Exp. Date_ for _business-partner-key_ which is two days from now. Click _Filter for value_ in the _Key Id_ column and _Apply now_.
+
+Then check the pie chart _Users_ and see who is using that key and advise him to update it.
+
+== You are a TAG Administrator and a service behind the TAG is failing, how do you find it?
+
+We will again do a signed request but to Movies Micro-service 2.
+
 ```
-curl -v -XGET -H "Authorization:Bearer <access-token>" http://localhost:8080/google
+./scripts/sign.sh --key business-partner-key --secret "secret" -X GET http://localhost:8080/movies-microservice2
 ```
 
-PS: If the access token has already expired, you need to authenticate again.
+After executing it, let's go to the _Proxy Dashboard_ again. In the Route visualization you will see that the Route _Movies Microservice 2_, is returning 404, therefore TAG is returning 404 as well. You can see very clear here that TAG found the route to Movies Microservice2 but the back-end didn't have the service.
 
-Now that you were able to use the proxy feature, you will learn how to analyze it with Metrics.  Go back to the Dashboard page and click Proxy Dashboard.
+image::routes.png[title="Routes"]
 
+== Load Data into the Proxy Dashboard
+```
+./scripts/call_microservices.sh
+```
 == Proxy Dashboard Introduction
 
 In the _Proxy Dashboard_ you will be able to see the request you just did. Then you will be able to analyze the requests in several visualizations.
 
-_Request Path_ - will show you how many requests were sent to a path.
-_Requests_ - will show you the date and request id.
-_Keys_ - will show you the key information, thus this request had a token signed with oauth2-keypair using RS256 as the algorithm. The expiration date is n/d as oauth2 keys do not expire in TAG.
-_Routes_ - will show you where the request was routed to, method, average total response time, and average response time which measures how long google took to respond.
+_Request Path_ - will show you how many requests were sent to a path. +
+_Requests_ - will show you the date and request id. +
+_Keys_ - will show you the key information. +
+_Routes_ - will show you where the request was routed to, method, status, average total response time, and average response time which measures how long the micro-service took to respond. +
 
 image::top_proxy_dashboard.png[title="Tables with Routes"]
 
 After the top tables you will see the pie charts, that have very useful data for filtering just like we mentioned in the OAuth2 Dashboard.
 
 image::proxy_pie.png[title="Proxy Pie Charts"]
-
-Let’s now call the route 10 times and then check the next visualization.
-
-```
-for i in {1..10}; do curl -v -XGET -H "Authorization:Bearer <access-token>" http://localhost:8080/google; done;
-```
 
 The _Proxy Dashboard_ also provides a way to analyze percentiles. The visualization _Route Response Time_, will help you to analyze if in an ordered sample a small number of users may be having lower performance than others. 95th or 99th for example may provide spikes if only few users are having bad performance in a period of time. Also in the right side there is the _Route Average Response Time_.
 
@@ -219,6 +285,7 @@ image::responsetime_by_server_datacenter.png[title="Response Time by Server and 
 == Stop Docker Images
 After executing this tutorial stop all docker images so it does not overload your computer.
 ```
-docker stop $(docker ps -q)
+docker stop tag-metrics
+docker stop movies
+docker stop tag-elk-kibana
 ```
-

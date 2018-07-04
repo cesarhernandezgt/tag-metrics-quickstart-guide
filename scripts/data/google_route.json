@@ -1,0 +1,27 @@
+//api/route
+{
+  "headers": [
+    
+  ],
+  "profileRequiresAll": true,
+  "roles": [
+    
+  ],
+  "profiles": [
+    {
+      "id": "oauth2-profile",
+      "name": "OAuth2 Profile",
+      "displayName": "OAuth2 Profile",
+      "description": "The OAuth 2.0 Profile provides a way to obtain limited access to user accounts on an HTTP service.\n\nThe TAG OAuth 2.0 implementation, uses JSON Web Tokens (JWTs) as the tokens issued and used to authenticate to access endpoints.\n\nJWT tokens consist of a header and a set of claims, which are both Base64 encoded, and a signature calculated using RSA\nwith SHA256. Overall, this creates three Base64 strings which are concatenated together with dots (.). Each use of a\nJWT token within TAG is validated using the TAG RSA public key, preventing tokens issued by the TAG from being tampered\nwith.\n"
+    }
+  ],
+  "index": 1,
+  "modRewrite": "RewriteRule \"^/google$\" \"http://www.google.com\" [P,NE,auth]",
+  "lastMatchPattern": "^/google$",
+  "roleRequiresAll": true,
+  "tags": [
+    
+  ],
+  "name": "Google",
+  "id": "google"
+}
