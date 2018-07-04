@@ -5,7 +5,7 @@
 :sectid:
 :imagesdir: media
 
-= Metrics
+= Monitor Microservices with Elasticsearch
 
 == Introduction
 
