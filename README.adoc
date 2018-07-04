@@ -96,14 +96,21 @@ image::kibana_index.png[title="Kibana Index Configured"]
 
 == Run App with Micro-Services
 
+If you already run _movie-api_ in the previous quickstart guides just execute:
+
+```
+docker start movie-api
+```
+If you didn't run previously execute the following command.
+
 For Linux: +
 ```
-docker run --net=host --name movies -p 9080:9080 tomitribedev/tag-routes-quickstart-guide
+docker run --net=host -d -p 9090:9090 --name movie-api  tomitribedev/movie-api
 ```
 
 For OSX: +
 ```
-docker run --name movies -p 9080:9080 tomitribedev/tag-routes-quickstart-guide
+docker run -d -p 9090:9090 --name movie-api  tomitribedev/movie-api
 ```
 
 == Load initial data to TAG

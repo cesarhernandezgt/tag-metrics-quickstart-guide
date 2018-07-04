@@ -1,7 +1,7 @@
 //api/route
 {
   "profileRequiresAll": true,
-  "modRewrite": "RewriteRule \"^/movies-microservice2$\" \"http://localhost:9080/movie-api/api/movies2\" [P,NE,auth]",
+  "modRewrite": "RewriteRule \"^/movies-microservice2$\" \"http://localhost:9090/movie-api/api/movies2\" [P,NE,auth]",
   "roleRequiresAll": true,
   "name": "Movies Microservice 2",
   "profiles": [
