@@ -13,7 +13,7 @@
 === Learning objectives
 
 * How TAG Monitoring can help an Administrator in some real-world scenarios
-* Overview of OAuth2 and Proxy Dashboard
+* Overview of the OAuth2 and Proxy Dashboard
 
 === Prerequisites
 
@@ -118,7 +118,7 @@ For OSX: +
 docker run -d -p 9090:9090 --name movie-api  tomitribedev/movie-api
 ```
 
-== Load initial data to TAG
+== Load initial data 
 
 For this demo, you need to clone the git repository _tomitribe/tag-metrics-quickstart-guide_ and execute a script to load pre-configured data.
 
