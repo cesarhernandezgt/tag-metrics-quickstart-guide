@@ -12,8 +12,8 @@
 
 === Learning objectives
 
-* Run the Tribestream API Gateway (TAG) with Metrics
-* How to use TAG Dashboards and Visualizations
+* How TAG Monitoring can help an Administrator in some real-world scenarios
+* Overview of OAuth2 and Proxy Dashboard
 
 === Prerequisites
 
@@ -21,7 +21,11 @@
 * link:https://curl.haxx.se/[Curl] installed
 * link:https://git-scm.com/[Git] installed
 
-== Docker Memory Configuration
+== Run Docker Images
+
+Before digging into the real-world you need start the docker images of ElasticSearch and Kibana, TAG and the Movie-Api app.
+
+=== Docker Memory Configuration
 To run the image with ElasticSearch and Kibana you need to increase the virtual memory:
 
 For Linux: +
@@ -44,7 +48,7 @@ Exit by Control-A Control-\.
 
 IMPORTANT: If you are a OSX user make sure your Docker memory is at least 6GB. See how to configure it link:https://docs.docker.com/docker-for-mac/#advanced[here].
 
-==  Run Docker Image for ElasticSearch 5 and Kibana 5
+=== ElasticSearch 5 and Kibana 5
 
 Run the docker image:
 ```
@@ -62,7 +66,7 @@ You can access Kibana using the URL link:http://localhost:5601[].  This is the K
 
 image::kibana_page.png[title="Kibana Web Page"]
 
-== Run Tribestream API Gateway with Metrics Configuration
+=== Tribestream API Gateway with Metrics Configuration
 Go to the terminal, press _Ctrl P_ + _Ctrl Q_ and detach the previous docker image. If you already have TAG running, stop the image using the command:
 
 ```
@@ -95,7 +99,7 @@ URL: link:http://localhost:5601[]
 
 image::kibana_index.png[title="Kibana Index Configured"]
 
-== Run App with Micro-Services
+=== Movie-Api app with the Micro-Services
 
 Go to the terminal, press _Ctrl P_ + _Ctrl Q_ and detach the previous docker image. If you already run _movie-api_ in the previous quickstart guides just execute:
 
@@ -192,7 +196,7 @@ curl -XPOST -d "grant_type=password&username=bob&password=12345678&client_id=bob
 
 User will be able to authenticate properly. You can go again to the link:http://localhost:5601/app/kibana#/dashboard/OAuth2-Dashboard[OAuth2 Dashboard] and check that the user was able to authenticate.
 
-== OAuth2 Dashboard Introduction
+== OAuth2 Dashboard Overview
 The OAuth2 Dashboard has all the authentication information related to OAuth2. Therefore here we have in the Requests visualization the two requests you did and with the date and their request ids. It can be used for filtering the the Discover menu if you want to see the full payload.
 
 image::top_oauth2.png[title="OAuth2 Dashboard"]
@@ -260,7 +264,7 @@ Execute the script below so we can see the _Proxy Dashboard_ fully populated wit
 ./scripts/call_microservices.sh
 ```
 
-== Proxy Dashboard Introduction
+== Proxy Dashboard Overview
 
 In the _Proxy Dashboard_ you will be able to see the request you just did. Then you will be able to analyze the requests in several visualizations.
 
