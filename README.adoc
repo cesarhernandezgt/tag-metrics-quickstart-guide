@@ -118,7 +118,7 @@ For OSX: +
 docker run -d -p 9090:9090 --name movie-api  tomitribedev/movie-api
 ```
 
-== Load initial data 
+== Load initial data
 
 For this demo, you need to clone the git repository _tomitribe/tag-metrics-quickstart-guide_ and execute a script to load pre-configured data.
 
@@ -188,7 +188,7 @@ image::user_not_found.png[title="User not found error"]
 
 Now you can advise the user saying the issue is: *The user was not found* and he may use valid user.
 
-The user realizes the username is actually bob, and tries again.
+The user realizes the username is actually _bob_, and tries again.
 
 ```
 curl -XPOST -d "grant_type=password&username=bob&password=12345678&client_id=bob-mobile-client&client_secret=12345678" http://localhost:8080/oauth2/token
@@ -197,7 +197,7 @@ curl -XPOST -d "grant_type=password&username=bob&password=12345678&client_id=bob
 User will be able to authenticate properly. You can go again to the link:http://localhost:5601/app/kibana#/dashboard/OAuth2-Dashboard[OAuth2 Dashboard] and check that the user was able to authenticate.
 
 == OAuth2 Dashboard Overview
-The OAuth2 Dashboard has all the authentication information related to OAuth2. Therefore here we have in the Requests visualization the two requests you did and with the date and their request ids. It can be used for filtering the the Discover menu if you want to see the full payload.
+The OAuth2 Dashboard has all the authentication information related to OAuth2. Therefore here we have in the Requests visualization the two requests you did and with the date and their request ids. It can be used for filtering on the Discover menu if you want to see the full payload.
 
 image::top_oauth2.png[title="OAuth2 Dashboard"]
 
@@ -219,7 +219,7 @@ The _Authentication Response Time_ will tell you the average time in seconds the
 
 image::auth_response_time.png[title="Authentication Response Time"]
 
-And the last three ones in the OAuth2 Dashboard are:
+And the last three visualizations in the OAuth2 Dashboard are:
 
 _Traffic by User_ - It will show you the requests by User over a period of time.
 
@@ -231,9 +231,9 @@ image::oauth2_three_last.png[title="Last three visualizations"]
 
 Now that we learned about the OAuth2 Dashboard, let's go to the next scenario.
 
-== You are a TAG Administrator and you want to advise a business partner that the key is expiring.
+== You are a TAG Administrator and you want to advise a business partner that the key is expiring
 
-The script below will sign the request to a micro-service, protected with Http Signature, with the _business-partner-key_.
+The script below will sign the request to Movies Micro-service, protected with Http Signature, with the _business-partner-key_.
 ```
 ./scripts/sign.sh --key business-partner-key --secret "secret" -X GET http://localhost:8080/movies-microservice
 ```
@@ -258,7 +258,7 @@ image::routes.png[title="Routes"]
 
 == Load Data into the Proxy Dashboard
 
-Execute the script below so we can see the _Proxy Dashboard_ fully populated with more data. It will take 60 seconds to finish.
+Execute the script below, it will call TAG several times and you will see the _Proxy Dashboard_ with populated more data. It will take 60 seconds to finish.
 
 ```
 ./scripts/call_microservices.sh
@@ -266,7 +266,7 @@ Execute the script below so we can see the _Proxy Dashboard_ fully populated wit
 
 == Proxy Dashboard Overview
 
-In the _Proxy Dashboard_ you will be able to see the request you just did. Then you will be able to analyze the requests in several visualizations.
+In the _Proxy Dashboard_ you will be able to analyze the requests in several visualizations.
 
 _Request Path_ - will show you how many requests were sent to a path. +
 _Requests_ - will show you the date and request id. +
