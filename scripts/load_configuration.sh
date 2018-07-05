@@ -11,6 +11,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     HOST="host.docker.internal"
 fi
 
+# Account Policies
+import http://${HOST}:8080/tag data/account-policies.json
+
 # Accounts
 import http://${HOST}:8080/tag data/account-business-partner.json
 import http://${HOST}:8080/tag data/account-bob.json
@@ -25,5 +28,3 @@ import http://${HOST}:8080/tag data/account-steve.json
 import http://${HOST}:8080/tag data/movies_route.json
 import http://${HOST}:8080/tag data/movies2_route.json
 
-# Account Policies
-import http://${HOST}:8080/tag data/account-policies.json
