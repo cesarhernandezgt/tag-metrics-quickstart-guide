@@ -17,9 +17,9 @@
 
 === Prerequisites
 
-* link:https://www.docker.com/community-edition[Docker] installed and running
-* link:https://curl.haxx.se/[Curl] installed
-* link:https://git-scm.com/[Git] installed
+* link:https://www.docker.com/community-edition[Docker, window="_blank"] installed and running
+* link:https://curl.haxx.se/[Curl, window="_blank"] installed
+* link:https://git-scm.com/[Git, window="_blank"] installed
 
 == Run Docker Images
 
@@ -27,7 +27,7 @@ Before digging into the real-world you need start the docker images of ElasticSe
 
 === Memory Configuration
 
-Elasticsearch uses a mmapfs directory by default for 64bit systems to store its indices. The default operating system limits on mmap counts is likely to be too low, which may result in out of memory exceptions. See more on the link:https://www.elastic.co/guide/en/elasticsearch/reference/5.6/vm-max-map-count.html[ElasticSearch documentation, , window="_blank"].
+Elasticsearch uses a mmapfs directory by default for 64bit systems to store its indices. The default operating system limits on mmap counts is likely to be too low, which may result in out of memory exceptions. See more on the link:https://www.elastic.co/guide/en/elasticsearch/reference/5.6/vm-max-map-count.html[ElasticSearch documentation, window="_blank"].
 
 For Linux, you can increase the limits by running the following command as root:
 
@@ -60,11 +60,11 @@ After a few seconds you should see the logs like this:
 
 image::elk_kibana.png[title="Elastic Search  and Kibana logs"]
 
-Test if ElasticSearch is properly running, thus in a web browser access http://localhost:9200. You will be able to see a page like this:
+Test if ElasticSearch is properly running, thus in a web browser access link:http://localhost:9200[,window="_blank"]. You will be able to see a page like this:
 
 image::es_web.png[title="Elastic Search Web Page"]
 
-You can access Kibana using the URL link:http://localhost:5601[].  This is the Kibana index configuration page. At this point Kibana is ready to receive the index configuration during TAG first startup so there is no need to configure anything from Kibana UI:
+You can access Kibana using the URL link:http://localhost:5601[,window="_blank"].  This is the Kibana index configuration page. At this point Kibana is ready to receive the index configuration during TAG first startup so there is no need to configure anything from Kibana UI:
 
 image::kibana_page.png[title="Kibana Web Page"]
 
@@ -97,7 +97,7 @@ INFO [main] org.apache.catalina.startup.Catalina.start Server startup in 18348 m
 
 After seeing this log message and the server is started you will be able to see Kibana running configured with the _tribe-metrics-*_ index.
 
-URL: link:http://localhost:5601[]
+URL: link:http://localhost:5601[,window="_blank"]
 
 image::kibana_index.png[title="Kibana Index Configured"]
 
@@ -149,7 +149,7 @@ User receives response:
 ```
 TAG didn't authenticate and the user decides to reach out and ask what is the issue.
 
-As a TAG Administrator I can use Discover in link:http://localhost:5601/app/kibana#/discover[Kibana] and the Built in Dashboards to advise the user. First step is to go to the Discover menu and try to find the request for the username _bob1_. Type the lucene query to filter the request for that user and press _enter_.
+As a TAG Administrator I can use Discover in link:http://localhost:5601/app/kibana#/discover[Kibana,window="_blank"] and the Built in Dashboards to advise the user. First step is to go to the Discover menu and try to find the request for the username _bob1_. Type the lucene query to filter the request for that user and press _enter_.
 ```
 category:request AND authentication.profiles.username:bob1
 ```
@@ -182,7 +182,9 @@ The request is there, click _JSON_. In the payload, into _authentication_ proper
 ...
 ```
 
-You can also analyze this request in the OAuth2 Dashboard, therefore copy the request id from the payload and go to the menu _Dashboard_ -> link:http://localhost:5601/app/kibana#/dashboard/OAuth2-Dashboard[_OAuth2 Dashboard_].
+You can also analyze this request in the OAuth2 Dashboard, therefore copy the request id from the payload and go to the menu _Dashboard_ -> link:
+
+://localhost:5601/app/kibana#/dashboard/OAuth2-Dashboard[_OAuth2 Dashboard_].
 
 Add the _AND <request_id>_ to the lucene query input and press _enter_. If you check the _Request by Error_ visualization you will see the _user_not_found_ error is there.
 
@@ -193,10 +195,12 @@ Now you can advise the user saying the issue is: *The user was not found* and he
 The user realizes the username is actually _bob_, and tries again.
 
 ```
-curl -XPOST -d "grant_type=password&username=bob&password=12345678&client_id=bob-mobile-client&client_secret=12345678" http://localhost:8080/oauth2/token
+curl -XPOST -d "grant_type=password&username=bob&password=12345678&client_id=bob-mobile-client&client_secret=12345678" http://localhost:8080/oauth2/t
+
+oken
 ```
 
-User will be able to authenticate properly. You can go again to the link:http://localhost:5601/app/kibana#/dashboard/OAuth2-Dashboard[OAuth2 Dashboard] and check that the user was able to authenticate.
+User will be able to authenticate properly. You can go again to the link:http://localhost:5601/app/kibana#/dashboard/OAuth2-Dashboard[OAuth2 Dashboard,window="_blank"] and check that the user was able to authenticate.
 
 == OAuth2 Dashboard Overview
 The OAuth2 Dashboard has all the authentication information related to OAuth2. Therefore here we have in the Requests visualization the two requests you did and with the date and their request ids. It can be used for filtering on the Discover menu if you want to see the full payload.
@@ -240,7 +244,7 @@ The script below will sign the request to Movies Micro-service, protected with H
 ./scripts/sign.sh --key business-partner-key --secret "secret" -X GET http://localhost:8080/movies-microservice
 ```
 
-After that, as TAG Administrator, go to Kibana _Dashboard -> link:http://localhost:5601/app/kibana#/dashboard/Proxy-Dashboard[Proxy Dashboard_]
+After that, as TAG Administrator, go to Kibana _Dashboard -> link:http://localhost:5601/app/kibana#/dashboard/Proxy-Dashboard[Proxy Dashboard_,window="_blank"]
 
 In the _Keys_ table you will see the _Exp. Date_ for _business-partner-key_ which is two days from now. Click _Filter for value_ in the _Key Id_ column and _Apply now_.
 
@@ -254,7 +258,7 @@ We will again do a signed request but to Movies Micro-service 2.
 ./scripts/sign.sh --key business-partner-key --secret "secret" -X GET http://localhost:8080/movies-microservice2
 ```
 
-After executing it, let's go to the link:http://localhost:5601/app/kibana#/dashboard/Proxy-Dashboard[_Proxy Dashboard_] again. In the _Routes_ visualization you will see that the Route _Movies Microservice 2_, is returning 404, therefore TAG is returning 404 as well. You can see very clear here that TAG found the route to Movies Microservice2 but the back-end didn't have the service.
+After executing it, let's go to the link:http://localhost:5601/app/kibana#/dashboard/Proxy-Dashboard[_Proxy Dashboard_,window="_blank"] again. In the _Routes_ visualization you will see that the Route _Movies Microservice 2_, is returning 404, therefore TAG is returning 404 as well. You can see very clear here that TAG found the route to Movies Microservice2 but the back-end didn't have the service.
 
 image::routes.png[title="Routes"]
 
