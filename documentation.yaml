@@ -5,5 +5,5 @@ documentation:
   - doc_root: 'README.adoc'
     name: 'Examples'
     display_name: 'Monitor Microservices with Elasticsearch'
-    public_path: 'en/api-gateway/metrics'
+    public_path: 'en/api-gateway/monitor-microservices-with-elasticsearch'
     single_page: 'true'
