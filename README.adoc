@@ -25,45 +25,39 @@
 
 Before digging into the real-world you need start the docker images of ElasticSearch and Kibana, TAG and the Movie-Api app.
 
-=== Memory Configuration
+=== ElasticSearch 5
 
-Elasticsearch uses a mmapfs directory by default for 64bit systems to store its indices. The default operating system limits on mmap counts is likely to be too low, which may result in out of memory exceptions. See more on the link:https://www.elastic.co/guide/en/elasticsearch/reference/5.6/vm-max-map-count.html[ElasticSearch documentation, window="_blank"].
-
-For Linux, you can increase the limits by running the following command as root:
+Run the docker image for ElasticSearch:
 
 ```
-sudo sysctl -w vm.max_map_count=262144
+docker run -p 9200:9200 -p 9300:9300 --name=elk_tag -it elasticsearch:5.5
 ```
 
-For OSX:
-
-The vm_max_map_count setting must be set within the xhyve virtual machine.
-```
-screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
-```
-
-Log in with root and no password. Then configure the sysctl setting as you would for Linux. +
-```
-sysctl -w vm.max_map_count=262144
-```
-Exit by Control-A Control-\.
-
-IMPORTANT: If you are a OSX user make sure your Docker memory is at least 6GB. See how to configure it link:https://docs.docker.com/docker-for-mac/#advanced[here].
-
-=== ElasticSearch and Kibana 5
-
-Run the docker image:
-
-```
-docker run --name tag-elk-kibana -it -p 5601:5601 -p 9200:9200 -p 5044:5044 sebp/elk:564
-```
 After a few seconds you should see the logs like this:
 
-image::elk_kibana.png[title="Elastic Search  and Kibana logs"]
+image::elk_tag.png[title="Elastic Search 5 running"]
 
 Test if ElasticSearch is properly running, thus in a web browser access link:http://localhost:9200[,window="_blank"]. You will be able to see a page like this:
 
 image::es_web.png[title="Elastic Search Web Page"]
+
+=== Kibana 5
+
+Run the docker image for Kibana. +
+
+For Linux: +
+```
+docker run --net=host --name kibana_tag -e ELASTICSEARCH_URL=http://localhost:9200 -p 5601:5601 -it kibana:5.5
+```
+
+For OSX: +
+```
+docker run --net=host --name kibana_tag -e ELASTICSEARCH_URL=http://host.docker.internal:9200 -p 5601:5601 -it kibana:5.5
+```
+
+After a few seconds you should see the logs like this:
+
+image::kibana.png[title="Kibana 5 running"]
 
 You can access Kibana using the URL link:http://localhost:5601[,window="_blank"].  This is the Kibana index configuration page. At this point Kibana is ready to receive the index configuration during TAG first startup so there is no need to configure anything from Kibana UI:
 
@@ -80,12 +74,12 @@ Then run TAG with Metrics configured pointing to the ElasticSearch and Kibana yo
 
 For Linux: +
 ```
-docker run --name=tag-metrics -it --net=host -e LICENSE=accept -e ELASTICSEARCH_HOST=localhost -e KIBANA_HOST=localhost tomitribe/tribestream-api-gateway
+docker run --name=metrics_tag -it --net=host -e LICENSE=accept -e ELASTICSEARCH_HOST=localhost -e KIBANA_HOST=localhost tomitribe/tribestream-api-gateway
 ```
 
 For OSX: +
 ```
-docker run --name=tag-metrics -it -p 8080:8080 -e LICENSE=accept -e ELASTICSEARCH_HOST=host.docker.internal -e KIBANA_HOST=host.docker.internal tomitribe/tribestream-api-gateway
+docker run --name=metrics_tag -it -p 8080:8080 -e LICENSE=accept -e ELASTICSEARCH_HOST=host.docker.internal -e KIBANA_HOST=host.docker.internal tomitribe/tribestream-api-gateway
 ```
 
 TAG is ready when you see the following message on the TAG log:
@@ -311,7 +305,8 @@ image::responsetime_by_server_datacenter.png[title="Response Time by Server and 
 == Stop Docker Images
 After executing this tutorial stop all docker images so it does not overload your computer.
 ```
-docker stop tag-metrics
+docker stop metrics_tag
 docker stop movies
-docker stop tag-elk-kibana
+docker stop elk_tag
+docker stop kibana_tag
 ```
