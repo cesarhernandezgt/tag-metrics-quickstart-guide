@@ -53,6 +53,7 @@ IMPORTANT: If you are a OSX user make sure your Docker memory is at least 6GB. S
 === ElasticSearch and Kibana 5
 
 Run the docker image:
+
 ```
 docker run --name tag-elk-kibana -it -p 5601:5601 -p 9200:9200 -p 5044:5044 sebp/elk:564
 ```
@@ -190,7 +191,7 @@ Add the _AND <request_id>_ to the lucene query input and press _enter_. If you c
 
 image::user_not_found.png[title="User not found error"]
 
-Now you can advise the user saying the issue is: *The user was not found* and he may use valid user.
+Now you can advise the user saying the issue is: *The user was not found* and he may use valid user. +
 
 The user realizes the username is actually _bob_, and tries again.
 
