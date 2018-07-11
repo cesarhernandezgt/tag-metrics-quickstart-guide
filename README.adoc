@@ -21,7 +21,7 @@
 * link:https://curl.haxx.se/[Curl, window="_blank"] installed
 * link:https://git-scm.com/[Git, window="_blank"] installed
 
-== Run Docker Imagess
+== Run Docker Images
 
 Before digging into the real-world you need start the docker images of ElasticSearch and Kibana, TAG and the Movie-Api app.
 
