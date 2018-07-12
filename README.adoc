@@ -131,7 +131,7 @@ Execute the script below:
 
 Now we will check some scenarios to help you better understand how metrics can help you.
 
-== Introduction
+== Tribestream API Gateway with Metrics
 
 The Tribestream API Gateway has a great feature to help you monitor your microservices. When a request from a client hits TAG, the gateway will create an event containing everything that happened on that request. The events are sent and stored in ElasticSearch. Kibana will consume the data and show it in some awesome out of the box dashboards that will help you to monitor all traffic to your microservices. You will no longer be blind without information, as you have an amazing tool to help you manage and effectively support clients using your APIs.
 
