@@ -6,7 +6,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     HOST="host.docker.internal"
 fi
 
-
 TOTAL_TIME=0
 for i in {1..6}
 do

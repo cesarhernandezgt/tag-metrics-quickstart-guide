@@ -28,3 +28,5 @@ import http://${HOST}:8080/tag data/account-steve.json
 import http://${HOST}:8080/tag data/movies_route.json
 import http://${HOST}:8080/tag data/movies2_route.json
 
+
+echo "This script added 7 accounts, 2 routes and it changed the account policies configuration. These are all required for this guide."

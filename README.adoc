@@ -25,12 +25,18 @@
 
 Before digging into the real-world you need start the docker images of ElasticSearch and Kibana, TAG and the Movie-Api app.
 
+=== Network configuration
+
+The docker containers need to be in the same network to be able to communicate. To do that create a specific network for them using:
+
+docker network create metrics-net
+
 === ElasticSearch 5
 
 Run the docker image for ElasticSearch:
 
 ```
-docker run -p 9200:9200 -p 9300:9300 --name=elk_tag -it elasticsearch:5.5
+docker run --net metrics-net -p 9200:9200 -p 9300:9300 --name=elk_tag -it elasticsearch:5.5
 ```
 
 After a few seconds you should see the logs like this:
@@ -45,14 +51,8 @@ image::es_web.png[title="Elastic Search Web Page"]
 
 Run the docker image for Kibana. +
 
-For Linux: +
 ```
-docker run --net=host --name kibana_tag -e ELASTICSEARCH_URL=http://localhost:9200 -p 5601:5601 -it kibana:5.5
-```
-
-For OSX: +
-```
-docker run --net=host --name kibana_tag -e ELASTICSEARCH_URL=http://host.docker.internal:9200 -p 5601:5601 -it kibana:5.5
+docker run --net metrics-net --name kibana_tag -e ELASTICSEARCH_URL=http://elk_tag:9200 -p 5601:5601 -it kibana:5.5
 ```
 
 After a few seconds you should see the logs like this:
@@ -72,14 +72,8 @@ docker stop tag
 
 Then run TAG with Metrics configured pointing to the ElasticSearch and Kibana you started.
 
-For Linux: +
 ```
-docker run --name=metrics_tag -it --net=host -e LICENSE=accept -e ELASTICSEARCH_HOST=localhost -e KIBANA_HOST=localhost tomitribe/tribestream-api-gateway
-```
-
-For OSX: +
-```
-docker run --name=metrics_tag -it -p 8080:8080 -e LICENSE=accept -e ELASTICSEARCH_HOST=host.docker.internal -e KIBANA_HOST=host.docker.internal tomitribe/tribestream-api-gateway
+docker run --net metrics-net --name=tag_metrics -p 8080:8080 -it -e LICENSE=accept -e ELASTICSEARCH_HOST=elk_tag -e KIBANA_HOST=kibana_tag tomitribe/tribestream-api-gateway
 ```
 
 TAG is ready when you see the following message on the TAG log:
@@ -105,14 +99,8 @@ docker start movie-api
 ```
 If you didn't run previously execute the following command.
 
-For Linux: +
 ```
-docker run --net=host -d -p 9090:9090 --name movie-api  tomitribedev/movie-api
-```
-
-For OSX: +
-```
-docker run -d -p 9090:9090 --name movie-api  tomitribedev/movie-api
+docker run --net=metrics-net -d -p 9090:9090 --name movie-api  tomitribedev/movie-api
 ```
 
 == Load initial data
@@ -313,7 +301,7 @@ image::responsetime_by_server_datacenter.png[title="Response Time by Server and 
 == Stop Docker Images
 After executing this tutorial stop all docker images so it does not overload your computer.
 ```
-docker stop metrics_tag
+docker stop tag_metrics
 docker stop movies
 docker stop elk_tag
 docker stop kibana_tag
