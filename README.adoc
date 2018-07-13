@@ -74,7 +74,7 @@ Then run TAG with Metrics configured pointing to the ElasticSearch and Kibana yo
 
 For Linux: +
 ```
-docker run --name=metrics_tag -it --net=host -e LICENSE=accept -e ELASTICSEARCH_HOST=localhost -e KIBANA_HOST=localhost tomitribe/tribestream-api-gateway
+docker run --name=metrics_tag -it -p 8080:8080 --net=host -e LICENSE=accept -e ELASTICSEARCH_HOST=localhost -e KIBANA_HOST=localhost tomitribe/tribestream-api-gateway
 ```
 
 For OSX: +
