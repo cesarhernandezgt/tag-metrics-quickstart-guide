@@ -41,6 +41,8 @@ Test if ElasticSearch is properly running, thus in a web browser access link:htt
 
 image::es_web.png[title="Elastic Search Web Page"]
 
+On the terminal, press _Ctrl P_ + _Ctrl Q_ in order to detach the previous docker image and leave it running in the background.
+
 === Kibana 5
 
 Run the docker image for Kibana. +
@@ -52,7 +54,7 @@ docker run --net=host --name kibana_tag -e ELASTICSEARCH_URL=http://localhost:92
 
 For OSX: +
 ```
-docker run --net=host --name kibana_tag -e ELASTICSEARCH_URL=http://host.docker.internal:9200 -p 5601:5601 -it kibana:5.5
+docker run --name kibana_tag -e ELASTICSEARCH_URL=http://host.docker.internal:9200 -p 5601:5601 -it kibana:5.5
 ```
 
 After a few seconds you should see the logs like this:
@@ -63,8 +65,10 @@ You can access Kibana using the URL link:http://localhost:5601[,window="_blank"]
 
 image::kibana_page.png[title="Kibana Web Page"]
 
+On the terminal, press _Ctrl P_ + _Ctrl Q_ in order to detach the previous docker image and leave it running in the background.
+
 === Tribestream API Gateway with Metrics Configuration
-Go to the terminal, press _Ctrl P_ + _Ctrl Q_ and detach the previous docker image. If you already have TAG running, stop the image using the command:
+ If you already have TAG running, stop the container using the command:
 
 ```
 docker stop tag
@@ -96,9 +100,11 @@ URL: link:http://localhost:5601[,window="_blank"]
 
 image::kibana_index.png[title="Kibana Index Configured"]
 
+On the terminal, press _Ctrl P_ + _Ctrl Q_ in order to detach the previous docker image and leave it running in the background.
+
 === Movie-Api app with the Micro-Services
 
-Go to the terminal, press _Ctrl P_ + _Ctrl Q_ and detach the previous docker image. If you already run _movie-api_ in the previous quickstart guides just execute:
+If you already ran the _movie-api_ from previous guides just execute on a terminal:
 
 ```
 docker start movie-api
